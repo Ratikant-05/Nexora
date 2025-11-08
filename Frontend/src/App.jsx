@@ -1,16 +1,14 @@
-import './App.css'
-import AddToCart from './Components/AddToCart'
-import GetCart from './Components/GetCart'
-import GetProducts from './Components/GetProducts'
+import "./App.css";
+import GetProducts from "./Components/GetProducts";
+import { ToastContainer } from "react-toastify";
 
 function App() {
-
   return (
     <>
-      <GetProducts/>
-      <GetCart/>
+      <GetProducts />
+      <ToastContainer/>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

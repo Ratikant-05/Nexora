@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cart from "./Cart";
+import { toast } from "react-toastify";
 
 const GetProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState("");
   const [cartUpdated, setCartUpdated] = useState(false);
 
   const BaseAPI = "http://localhost:4444/api";
@@ -32,63 +32,135 @@ const GetProducts = () => {
   const handleAddToCart = async (productId) => {
     try {
       await axios.post(`${BaseAPI}/cart`, { productId, qty: 1 });
-      setMessage("Product added to cart!");
+      toast.success("Product added to cart!");
       setCartUpdated(!cartUpdated);
-
-      setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       console.error(err);
-      setMessage(err.message || "Failed to add to cart");
-      setTimeout(() => setMessage(""), 3000);
+      toast.error(err.message || "Failed to add to cart");
     }
   };
 
-  if (loading) return <p>Loading products...</p>;
-  if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
+  if (loading)
+    return (
+      <div style={{ textAlign: "center", marginTop: "40px" }}>
+        <p>⏳ Loading products...</p>
+      </div>
+    );
+
+  if (error)
+    return (
+      <p style={{ color: "red", textAlign: "center" }}>Error: {error}</p>
+    );
 
   return (
-    <div style={{ padding: "20px", display: "flex", gap: "20px" }}>
-      <div style={{ flex: 2 }}>
-        <h2>Available Products</h2>
-
-        {message && <p style={{ color: message ? "green" : "red" }}>{message}</p>}
+    <div
+      style={{
+        display: "flex",
+        gap: "30px",
+        padding: "30px",
+        backgroundColor: "#f9fafb",
+        minHeight: "100vh",
+      }}
+    >
+      <div style={{ flex: 3 }}>
+        <h2
+          style={{
+            textAlign: "center",
+            marginBottom: "25px",
+            color: "#333",
+            fontSize: "24px",
+          }}
+        >
+          Available Products
+        </h2>
 
         {products.length === 0 ? (
           <p>No products found.</p>
         ) : (
-          <ul>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+              gap: "20px",
+            }}
+          >
             {products.map((product) => (
-              <li
+              <div
                 key={product.id}
                 style={{
-                  marginBottom: "15px",
-                  border: "1px solid #ddd",
-                  padding: "10px",
-                  borderRadius: "5px",
+                  backgroundColor: "white",
+                  borderRadius: "10px",
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+                  padding: "15px",
+                  textAlign: "center",
+                  transition: "transform 0.2s ease-in-out",
                 }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "scale(1.03)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "scale(1)")
+                }
               >
-                <strong>{product.name}</strong> — ₹{product.price}
+                <h3 style={{ fontSize: "16px", color: "#333" }}>
+                  {product.name}
+                </h3>
+                <p
+                  style={{
+                    color: "#2ecc71",
+                    fontWeight: "bold",
+                    margin: "8px 0",
+                  }}
+                >
+                  ₹{product.price}
+                </p>
                 <button
                   onClick={() => handleAddToCart(product.id)}
                   style={{
-                    marginLeft: "10px",
                     backgroundColor: "#3498db",
                     color: "white",
                     border: "none",
-                    borderRadius: "5px",
-                    padding: "5px 10px",
+                    borderRadius: "6px",
+                    padding: "8px 12px",
                     cursor: "pointer",
+                    fontWeight: "500",
+                    transition: "background 0.2s",
                   }}
+                  onMouseEnter={(e) =>
+                    (e.target.style.backgroundColor = "#2176bd")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.target.style.backgroundColor = "#3498db")
+                  }
                 >
                   Add to Cart
                 </button>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
-
-      <div style={{ flex: 1 }}>
+      <div
+        style={{
+          flex: 1,
+          backgroundColor: "white",
+          borderRadius: "10px",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          padding: "20px",
+          height: "fit-content",
+          margin: "70px 0px"
+        }}
+      >
+        <h3
+          style={{
+            textAlign: "center",
+            marginBottom: "15px",
+            color: "#333",
+            fontSize: "20px",
+          }}
+        >
+          Your Cart
+        </h3>
         <Cart refresh={cartUpdated} />
       </div>
     </div>
