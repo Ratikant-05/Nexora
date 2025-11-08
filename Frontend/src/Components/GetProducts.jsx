@@ -9,7 +9,7 @@ const GetProducts = () => {
   const [error, setError] = useState(null);
   const [cartUpdated, setCartUpdated] = useState(false);
 
-  const BaseAPI = "https://nexora-tvn9.onrender.com || http://localhost:4444/api";
+  const BaseAPI = "https://nexora-tvn9.onrender.com/api || http://localhost:4444/api";
 
   useEffect(() => {
     const fetchProducts = async () => {

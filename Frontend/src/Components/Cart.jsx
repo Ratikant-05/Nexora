@@ -6,7 +6,7 @@ const Cart = ({ refresh }) => {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
 
-  const BaseAPI = "https://nexora-tvn9.onrender.com || http://localhost:4444/api";
+  const BaseAPI = "https://nexora-tvn9.onrender.com/api || http://localhost:4444/api";
 
   const fetchCart = async () => {
     try {
