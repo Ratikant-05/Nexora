@@ -8,7 +8,7 @@ dotenv.config()
 const app = express();
 const port = process.env.PORT;
 app.use(cors({
-  origin: [`http://localhost:5173`]
+  origin: [`https://nexora-tvn9.onrender.com , http://localhost:5173`]
 }))
 app.use(express.json())
 
